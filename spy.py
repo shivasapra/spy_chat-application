@@ -121,7 +121,6 @@ def add_status(current_status_message):
     else:
         print "\n you don't have any status currently\n----------------------"
     default = raw_input("\n \ndo you want to select from the older status (y/n)\n----------------------")
-
     if default.upper() == 'N':
         new_status_message = raw_input("enter status message\n----------------------")
 
