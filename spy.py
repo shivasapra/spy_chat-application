@@ -7,6 +7,38 @@ status_messages = ["die with memories not with dreams", "busy", "despacito", "Go
 friends = []
 
 
+def send_message():
+    friend_choice = select_a_friend()
+    original_image = raw_input("what is the name of the image?")
+    output_path = "image.jpg"
+    text = raw_input("what do you want to say")
+    Steganography.encode(original_image, output_path, text)
+    new_chat = {
+        "message": text,
+        "time": datetime.now(),
+        "sent_by_me": True
+    }
+
+    friends[friend_choice]['chats'].append(new_chat)
+    print "your secret message is ready"
+
+
+def read_message():
+    sender = select_a_friend()
+    output_path = raw_input("what is the name of the file")
+    secret_text = Steganography.decode(output_path)
+    print secret_text
+
+    new_chat = {
+        "message": secret_text,
+        "time": datetime.now(),
+        "sent_by_me": False,
+    }
+
+    friends[sender]['chats'].append(new_chat)
+    print "your secret message has been saved!"
+
+
 def spy_detail():
     temp = 0
     while temp == 0:
@@ -124,6 +156,8 @@ def start_chat(spy_name, spy_age, spy_rating,):
         while show_menu:
             menu_choice = int(raw_input("\n**********what do you want to do?********** \n "
                                         "1. update a status \n 2.Add a friend \n "
+                                        "3. send secret message to a friend \n"
+                                        "4. read a secret message\n"
                                         "5.exit application\n----------------------"))
             if menu_choice == 1:
                 print "\nyou have to update the status\n----------------------"
@@ -135,7 +169,10 @@ def start_chat(spy_name, spy_age, spy_rating,):
             elif menu_choice == 2:
                 no_of_friends = str(add_friend())
                 print no_of_friends + " friend/'s added"
-
+            elif menu_choice == 3:
+                send_message()
+            elif menu_choice == 4:
+                read_message()
             else:
                 show_menu = False
     else:
