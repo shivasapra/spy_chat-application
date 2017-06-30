@@ -61,6 +61,7 @@ def spy_detail():
         try:
             if type(int(spy_age)) == int:
                 age = "ok"
+                spy_age = int(spy_age)
         except:
             print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!\n"
             age = "not ok"
@@ -73,6 +74,7 @@ def spy_detail():
         try:
             if type(float(spy_rating)) == float:
                 rating = "ok"
+                spy_rating = float(spy_rating)
         except:
             print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!\n"
             rating = "not ok"
@@ -83,6 +85,7 @@ def spy_detail():
         'name': spy_name,
         'age': spy_age,
         'rating': spy_rating,
+        'is_online': spy_is_online,
     }
 
     return spy
@@ -111,7 +114,7 @@ def select_a_friend():
 
 def add_friend():
     friends_detail = spy_detail()
-    if friends_detail['age'] > '18' and friends_detail['age'] < '60':
+    if friends_detail['age'] > 12 and friends_detail['age'] < 50:
         friends.append(friends_detail)
     else:
         print "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" \
@@ -162,12 +165,10 @@ def add_status(current_status_message):
 
 def start_chat(spy_name, spy_age, spy_rating,):
     current_status_message = None
-    if spy_age > '18' and spy_age < '60':
+    if spy_age > 12 and spy_age < 50:
         print "\n\n\n**************************"
-        print "welcome " + spy_name + "\n age: " + spy_age + " \n rating: " + spy_rating
+        print "welcome " + spy_name + "\n age: " + str(spy_age) + " \n rating: " + str(spy_rating)
         print "**************************"
-        show_menu = True
-
         while 1:
             menu_choice = int(raw_input("\n**********what do you want to do?********** \n "
                                         "1. update a status \n 2.Add a friend \n "
