@@ -1,10 +1,18 @@
 from steganography.steganography import Steganography
-from spy_details import spy_name, spy_age, spy_salutation, spy_rating
+from spy_details import spy
 from datetime import datetime
 
 status_messages = ["die with memories not with dreams", "busy", "despacito", "Goooooogle!!!, i'm on my way"]
 
 friends = []
+
+
+class details :
+    name = " "
+    salutation = " "
+    age = 0
+    rating = 0.0
+    is_online = True
 
 
 def send_message():
@@ -40,53 +48,45 @@ def read_message():
 
 
 def spy_detail():
+    spy = details()
     temp = 0
     while temp == 0:
-        spy_name = raw_input("\n****************\nEnter Name")
+        spy.name = raw_input("\n****************\nEnter Name")
         try:
-            if type(int(spy_name)) == int:
+            if type(int(spy.name)) == int:
                 temp = 0
         except:
-            temp = len(spy_name)
+            temp = len(spy.name)
 
-    salutation = ' '
-    while salutation != 'mr.' and salutation != 'ms.':
-        salutation = raw_input("****************\nwhat should we call (mr.or ms.)")
-    spy_salutation = salutation
-    spy_name = spy_salutation + spy_name
+    while spy.salutation != 'mr.' and spy.salutation != 'ms.':
+        spy.salutation = raw_input("****************\nwhat should we call (mr.or ms.)")
+    spy.name = spy.salutation + spy.name
 
     age = "not ok"
     while age == "not ok":
-        spy_age = raw_input("****************\nplease enter age")
+        spy.age = raw_input("****************\nplease enter age")
         try:
-            if type(int(spy_age)) == int:
+            if type(int(spy.age)) == int:
                 age = "ok"
-                spy_age = int(spy_age)
+                spy.age = int(spy.age)
         except:
             print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!\n"
             age = "not ok"
 
     rating = "not ok"
     while rating == "not ok":
-        spy_rating = raw_input(
+        spy.rating = raw_input(
             "****************\nplease enter spy rating (out of 10)")
         print "****************"
         try:
-            if type(float(spy_rating)) == float:
+            if type(float(spy.rating)) == float:
                 rating = "ok"
-                spy_rating = float(spy_rating)
+                spy.rating = float(spy.rating)
         except:
             print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!\n"
             rating = "not ok"
 
-    spy_is_online = True
-
-    spy = {
-        'name': spy_name,
-        'age': spy_age,
-        'rating': spy_rating,
-        'is_online': spy_is_online,
-    }
+    spy.is_online = True
 
     return spy
 
@@ -205,12 +205,12 @@ while proceed == "not ok":
     proceed = raw_input("\nwant to proceed with default user (y/n)")
     if proceed.lower() == 'y':
         proceed = "ok"
-        start_chat(spy_salutation + spy_name, spy_age, spy_rating)
+        start_chat(spy.salutation + spy.name, spy.age, spy.rating)
 
     elif proceed.lower() == 'n':
         details = spy_detail()
         proceed = "ok"
-        start_chat(details['name'], details['age'], details['rating'],)
+        start_chat(details.name, details.age, details.rating,)
     else:
         print "\n!!!!!!!!!!!!!!!\nENTER CAREFULLY\n!!!!!!!!!!!!!!!"
         proceed = "not ok"

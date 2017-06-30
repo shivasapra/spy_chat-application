@@ -1,5 +1,6 @@
-spy_name = "holmes"
-spy_salutation = "Mr."
-spy_age = 20
-spy_rating = 8.9
-spy_is_online = True
+class spy :
+    name = 'holmes'
+    salutation = 'Mr.'
+    age = 20
+    rating = 8.9
+    is_online = True
