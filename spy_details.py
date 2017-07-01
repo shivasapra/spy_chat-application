@@ -18,3 +18,11 @@ class ChatMessage :
         self.message = message
         self.time = datetime.now
         self.sent_by_me = sent_by_me
+
+class maintain:
+    temp = 1
+    get = 0
+    def __init__(self,text):
+        self.text = text
+        maintain.get = (maintain.get +len(self.text.split()))/maintain.temp
+        maintain.temp += 1

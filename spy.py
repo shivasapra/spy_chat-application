@@ -1,5 +1,5 @@
 # spy details imported from spy _details.py
-from test3 import spy, Spy, ChatMessage
+from spy_details import spy, Spy, ChatMessage,maintain
 # importing libraries
 from datetime import datetime
 from steganography.steganography import Steganography
@@ -33,14 +33,17 @@ def read_message():
     output_path = raw_input("what is the name of the file")
     # decoding secret text from image
     secret_text = Steganography.decode(output_path)
-    if secret_text != None:
-        print "secret message is " + " " + secret_text
-        new_chat = ChatMessage(secret_text,False)
-        friends[sender].chat.append(new_chat)
-        print "your secret message has been saved!"
+    if secret_text == "SOS" or secret_text == "SAVE ME" or secret_text == "HURRY!!!!":
+        print "your friend is in DANGER,GET READY,WANTS YOUR HELP"
     else:
-        print "no secret message in image"
-        exit()
+        if secret_text != None:
+            print "secret message is " + " " + secret_text
+            new_chat = ChatMessage(secret_text,False)
+            friends[sender].chat.append(new_chat)
+            print "your secret message has been saved!"
+        else:
+            print "no secret message in image"
+            exit()
 
     words = len(secret_text.split())
     if words > 100:
@@ -53,17 +56,19 @@ def read_message():
         print '%d. %s' % (item_number, spy.name)
         item_number = item_number + 1
 
-
+    maintain_words = maintain(secret_text)
 
 # function defined to read chat
 def read_chat():
     read_for = select_a_friend()
-    from datetime import datetime
+    from colorama import init,Fore
+    #initializing
+    init(autorest = True)
     for chat in friends[read_for].chat:
         if chat.sent_by_me:
-            print '[%s] %s %s' % (chat.time.strftime("%d %B %Y"), 'you said:', chat.message)
+            print '[%s] [%s], %s %s    :   %s' % (chat.time.strftime("%d %B %Y"), Fore.BLUE + chat.time.strftime("%H:%M:%S") , Fore.RED + spy.name,  Fore.BLACK + "said" ,chat.message)
         else:
-            print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[read_for].name, chat.message)
+            print '[%s] [%s], %s %s %s : %s' % (chat.time.strftime("%d %B %Y"), Fore.BLUE + chat.time.strftime("%H:%M:%S"), Fore.RED + friends[read_for].salutation, Fore.RED + friends[read_for].name,Fore.Black + "Recieved",chat.message)
 
 
 # function defined for taking details from spy
