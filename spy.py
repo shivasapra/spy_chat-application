@@ -8,11 +8,12 @@ friends = []
 
 
 class details :
-    name = " "
-    salutation = " "
-    age = 0
-    rating = 0.0
-    is_online = True
+    def __init__(self):
+        self.name = " "
+        self.salutation = " "
+        self.age = 0
+        self.rating = 0.0
+        self.is_online = True
 
 
 def send_message():
@@ -26,9 +27,11 @@ def send_message():
         def __init__(self,message,sent_by_me):
             self.message = message
             self.time = datetime.now()
-            self.sent_by_me = True
+            self.sent_by_me = sent_by_me
 
-    friends[friend_choice]['chats'].append(ChatMessages)
+    obj=ChatMessages(text,True)
+
+    friends[friend_choice].spy.chats.append(obj)
     print "your secret message is ready"
 
 
@@ -63,7 +66,7 @@ def spy_detail():
     while temp == 0:
         spy.name = raw_input("\n****************\nEnter Name")
         try:
-            if type(int(spy.name)) == int:
+            if type(int(spy.name)) == int:   #if isalpha(spy.name)
                 temp = 0
         except:
             temp = len(spy.name)
@@ -216,19 +219,33 @@ def start_chat(spy_name, spy_age, spy_rating,):
               "\nyou are not eligible for a spy in this age" \
               "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 print("***************\n welcome!!!!.... \n***************")
 
-proceed = "not ok"
-while proceed == "not ok":
+proceed=1
+while proceed :
     proceed = raw_input("\nwant to proceed with default user (y/n)")
     if proceed.lower() == 'y':
-        proceed = "ok"
+        proceed = 0
         start_chat(spy.salutation + spy.name, spy.age, spy.rating)
 
     elif proceed.lower() == 'n':
         details = spy_detail()
-        proceed = "ok"
+        proceed = 0
         start_chat(details.name, details.age, details.rating,)
     else:
         print "\n!!!!!!!!!!!!!!!\nENTER CAREFULLY\n!!!!!!!!!!!!!!!"
-        proceed = "not ok"
