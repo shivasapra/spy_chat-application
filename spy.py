@@ -21,13 +21,14 @@ def send_message():
     output_path = "image.jpg"
     text = raw_input("what do you want to say")
     Steganography.encode(original_image, output_path, text)
-    new_chat = {
-        "message": text,
-        "time": datetime.now(),
-        "sent_by_me": True
-    }
 
-    friends[friend_choice]['chats'].append(new_chat)
+    class ChatMessages:
+        def __init__(self,message,sent_by_me):
+            self.message = message
+            self.time = datetime.now()
+            self.sent_by_me = True
+
+    friends[friend_choice]['chats'].append(ChatMessages)
     print "your secret message is ready"
 
 
@@ -35,16 +36,25 @@ def read_message():
     sender = select_a_friend()
     output_path = raw_input("what is the name of the file")
     secret_text = Steganography.decode(output_path)
-    print secret_text
+    print 'secret message is' + " " + secret_text
 
-    new_chat = {
-        "message": secret_text,
-        "time": datetime.now(),
-        "sent_by_me": False,
-    }
+    class ChatMessages:
+        def __init__(self,message,sent_by_me):
+            self.message = secret_text
+            self.time = datetime.now()
+            self.sent_by_me = False
 
-    friends[sender]['chats'].append(new_chat)
+    friends[sender]['chats'].append(ChatMessages)
     print "your secret message has been saved!"
+
+
+def read_chat():
+    read_for = select_a_friend()
+    for chat in friends[read_for].chats:
+        if chat.sent_by_me:
+            print '[%s] %s %s' % (chat.time.strftime("%d %B %Y"), 'you said:', chat.message)
+        else:
+            print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[read_for].name,chat.message)
 
 
 def spy_detail():
@@ -98,11 +108,11 @@ def select_a_friend():
               "\n*********************"
         for spy in friends:
             print "*****************************************************"
-            print "% s aged % d with rating % f is online" % (spy['name'], int(spy['age']), float(spy['rating']))
+            print "% s aged % d with rating % f is online" % (spy.name, int(spy.age), float(spy.rating))
             print "*****************************************************"
         item_number = 1
         for spy in friends:
-            print '%d. %s' % (item_number, spy['name'])
+            print '%d. %s' % (item_number, spy.name)
             item_number = item_number + 1
         index = int(raw_input('choose option')) - 1
         return index
@@ -112,10 +122,15 @@ def select_a_friend():
               "\n!!!!!!!!!!!!!!!!!!!")
 
 
-def add_friend():
+def add_friend(spy_rating):
     friends_detail = spy_detail()
-    if friends_detail['age'] > 12 and friends_detail['age'] < 50:
-        friends.append(friends_detail)
+    if friends_detail.age > 12 and friends_detail.age < 50:
+        if friends_detail.rating >= spy_rating:
+            friends.append(friends_detail)
+        else:
+            print "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" \
+                  "\nyour friend's rating must be greater than or equal to you" \
+                  "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     else:
         print "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" \
               "\nyou'r friend is not eligible for a spy in this age" \
@@ -174,7 +189,8 @@ def start_chat(spy_name, spy_age, spy_rating,):
                                         "1. update a status \n 2.Add a friend \n "
                                         "3. send secret message to a friend \n"
                                         "4. read a secret message\n"
-                                        "5.exit application\n"
+                                        "5. read chat history\n"
+                                        "6. close application"
                                         "**********************************************\n"))
             if menu_choice == 1:
                 current_status_message = add_status(current_status_message)
@@ -183,13 +199,15 @@ def start_chat(spy_name, spy_age, spy_rating,):
                 print current_status_message
                 print "**********************************"
             elif menu_choice == 2:
-                no_of_friends = (add_friend())
+                no_of_friends = (add_friend(spy_rating))
                 print "\n**********" + str(no_of_friends) + " friend/s added" + "**********"
             elif menu_choice == 3:
                 send_message()
             elif menu_choice == 4:
                 read_message()
             elif menu_choice == 5:
+                read_chat()
+            elif menu_choice == 6:
                 exit()
             else:
                 print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!"
