@@ -33,12 +33,26 @@ def read_message():
     output_path = raw_input("what is the name of the file")
     # decoding secret text from image
     secret_text = Steganography.decode(output_path)
-    print "secret message is " + " " + secret_text
+    if secret_text != None:
+        print "secret message is " + " " + secret_text
+        new_chat = ChatMessage(secret_text,False)
+        friends[sender].chat.append(new_chat)
+        print "your secret message has been saved!"
+    else:
+        print "no secret message in image"
+        exit()
 
-    new_chat = ChatMessage(secret_text,False)
+    words = len(secret_text.split())
+    if words > 100:
+        del friends[sender]
+        print "1 friend deleted due to a lot chat"
+        print "%d friends remaining" %(len(friends))
 
-    friends[sender].chat.append(new_chat)
-    print "your secret message has been saved!"
+    item_number = 1
+    for spy in friends:
+        print '%d. %s' % (item_number, spy.name)
+        item_number = item_number + 1
+
 
 
 # function defined to read chat
@@ -63,8 +77,10 @@ def spy_detail():
         try:
             if type(int(spy.name)) == int:
                 temp = 0
+                exit(temp == 0)
         except:
             temp = len(spy.name)
+            exit(temp == 0)
         # taking valid salutation
     salutation = ' '
     while salutation != 'mr.' and salutation != 'ms.':
@@ -96,7 +112,14 @@ def spy_detail():
             print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!\n"
             temp = 1
     spy.is_online = True
-
+    if spy.rating >= 9.0:
+        print " \nyou seems to be excellent"
+    elif 9.0 > spy.rating >= 7.0:
+        print "\nyou seems to be good"
+    elif 7.0 > spy.rating >= 5.0:
+        print "\nyou seems to be average"
+    else:
+        print "\nyou seems to be ok"
     # returning details of spy
     return spy
 
@@ -194,7 +217,8 @@ def start_chat(spy):
         print "\n\n\n**************************"
         print "welcome " + spy.name + "\n age: " + str(spy.age) + " \n rating: " + str(spy.rating)
         print "**************************"
-        while 1:
+        temp = 1
+        while temp:
             menu_choice = int(raw_input("\n**********what do you want to do?********** \n "
                                         "1. update a status \n 2.Add a friend \n "
                                         "3. send secret message to a friend \n"
@@ -218,9 +242,11 @@ def start_chat(spy):
             elif menu_choice == 5:
                 read_chat()
             elif menu_choice == 6:
+                print "thanks"
                 exit()
             else:
                 print "\n!!!!!!!!!!!!!!!\nenter carefully\n!!!!!!!!!!!!!!!"
+                temp = 1
     else:
         print "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" \
               "\nyou are not eligible for a spy in this age" \
