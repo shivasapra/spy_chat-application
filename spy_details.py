@@ -26,3 +26,9 @@ class maintain:
         self.text = text
         maintain.get = (maintain.get +len(self.text.split()))/maintain.temp
         maintain.temp += 1
+
+# list of status messages
+status_messages = ["die with memories not with dreams", "busy", "despacito", "Goooooogle!!!, i'm on my way"]
+
+# list of friend
+friends = []
